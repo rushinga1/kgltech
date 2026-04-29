@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
+      },
       colors: {
         brand: {
           blue: '#00A1DE',
@@ -12,7 +15,9 @@ export default {
         },
       },
       boxShadow: {
-        soft: '0 20px 45px -25px rgba(15, 23, 42, 0.35)',
+        soft: '0 20px 45px -25px rgba(15, 23, 42, 0.15)',
+        premium: '0 30px 60px -15px rgba(15, 23, 42, 0.12)',
+        glass: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)',
       },
       keyframes: {
         float: {
