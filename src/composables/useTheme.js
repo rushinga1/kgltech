@@ -1,33 +1,20 @@
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const isDark = ref(false);
-
-const applyTheme = () => {
-  if (typeof document === 'undefined') return;
-  if (isDark.value) {
-    document.documentElement.classList.add('dark');
-    localStorage.setItem('kt-theme', 'dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-    localStorage.setItem('kt-theme', 'light');
-  }
-};
-
-// Initialize
-const savedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('kt-theme') : null;
-const prefersDark = typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
-
-if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-  isDark.value = true;
-}
+const isDark = ref(typeof document !== 'undefined' && document.documentElement.classList.contains('dark'));
 
 export function useTheme() {
   function toggleTheme() {
-    isDark.value = !isDark.value;
-    applyTheme(); // Apply immediately on click
+    if (typeof document === 'undefined') return;
+    
+    document.documentElement.classList.toggle('dark');
+    isDark.value = document.documentElement.classList.contains('dark');
+    
+    localStorage.setItem('kt-theme', isDark.value ? 'dark' : 'light');
   }
 
-  onMounted(applyTheme);
+  onMounted(() => {
+    isDark.value = document.documentElement.classList.contains('dark');
+  });
 
   return {
     isDark,
