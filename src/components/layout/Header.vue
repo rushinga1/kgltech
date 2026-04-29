@@ -103,13 +103,14 @@ onMounted(() => {
         </div>
 
         <div class="flex items-center gap-2 lg:gap-4">
-          <!-- Theme Toggle -->
+          <!-- Theme Toggle (Visible on all screens) -->
           <button 
             @click="toggleTheme"
-            class="hidden sm:flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100/50 dark:bg-white/5 hover:bg-brand-yellow/10 transition-colors"
+            aria-label="Toggle dark mode"
+            class="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100/50 dark:bg-white/5 hover:bg-brand-yellow/10 transition-colors"
           >
             <Sun v-if="isDark" :size="20" class="text-brand-yellow" />
-            <Moon v-else :size="20" class="text-slate-700" />
+            <Moon v-else :size="20" class="text-slate-700 dark:text-slate-300" />
           </button>
 
           <RouterLink to="/wishlist" class="group relative flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100/50 dark:bg-white/5 hover:bg-brand-gold/10 transition-colors">
