@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { RouterLink } from 'vue-router';
+import { Star, ShoppingCart } from 'lucide-vue-next';
 import Button from '../ui/Button.vue';
 import RatingStars from './RatingStars.vue';
 import PriceTag from './PriceTag.vue';
@@ -33,8 +34,8 @@ function toggleWishlist() {
 </script>
 
 <template>
-  <article class="panel panel-hover group flex h-full flex-col overflow-hidden p-6">
-    <div class="relative mb-6 flex h-52 items-center justify-center rounded-[2rem] bg-slate-50 transition-colors group-hover:bg-brand-blue/5">
+  <article class="panel panel-hover group flex h-full flex-col overflow-hidden p-6 dark:bg-slate-900">
+    <div class="relative mb-6 flex h-52 items-center justify-center rounded-[2rem] bg-slate-50 dark:bg-white/5 transition-colors group-hover:bg-brand-blue/5 dark:group-hover:bg-brand-blue/10">
       <RouterLink :to="`/products/${product.id}`" class="flex h-full w-full items-center justify-center p-8">
         <img
           :src="product.image"
@@ -45,19 +46,20 @@ function toggleWishlist() {
       </RouterLink>
       <button
         type="button"
-        class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-xl shadow-sm backdrop-blur transition-all hover:bg-brand-gold/20"
+        class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-slate-900/80 text-xl shadow-sm backdrop-blur transition-all hover:bg-brand-gold/20"
         :aria-label="heartFilled ? 'Remove from wishlist' : 'Add to wishlist'"
         @click="toggleWishlist"
       >
-        <span :class="heartFilled ? 'text-brand-gold scale-110' : 'text-slate-400 opacity-60'">
-          {{ heartFilled ? '★' : '☆' }}
-        </span>
+        <Star 
+          :size="20" 
+          :class="heartFilled ? 'text-brand-gold fill-brand-gold scale-110' : 'text-slate-400 opacity-60 dark:text-slate-500'" 
+        />
       </button>
     </div>
 
     <div class="flex flex-1 flex-col">
       <div class="mb-3 flex items-center justify-between gap-3">
-        <span class="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+        <span class="rounded-full bg-slate-100 dark:bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
           {{ product.category }}
         </span>
         <RatingStars :rate="product.rating?.rate || 0" :count="product.rating?.count || 0" />
@@ -65,7 +67,7 @@ function toggleWishlist() {
 
       <RouterLink
         :to="`/products/${product.id}`"
-        class="line-clamp-2 text-lg font-black leading-tight text-slate-900 group-hover:text-brand-blue transition-colors"
+        class="line-clamp-2 text-lg font-black leading-tight text-slate-900 dark:text-white group-hover:text-brand-blue transition-colors"
       >
         {{ product.title }}
       </RouterLink>
@@ -73,6 +75,7 @@ function toggleWishlist() {
       <div class="mt-8 flex items-center justify-between gap-4">
         <PriceTag :price="product.price" class="scale-110 origin-left" />
         <Button class="rounded-2xl px-5 h-11 font-black uppercase text-[10px] tracking-widest shadow-lg shadow-brand-blue/10" aria-label="Add product to cart" size="sm" @click="addToCart">
+          <ShoppingCart :size="14" class="mr-2" />
           Buy Now
         </Button>
       </div>

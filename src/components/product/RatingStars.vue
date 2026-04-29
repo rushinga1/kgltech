@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { Star } from 'lucide-vue-next';
 
 const props = defineProps({
   rate: {
@@ -19,9 +20,14 @@ const stars = computed(() =>
 
 <template>
   <div class="flex items-center gap-2" :aria-label="`Rated ${rate} out of 5`">
-    <div class="flex items-center gap-1 text-brand-gold">
-      <span v-for="(filled, index) in stars" :key="index">{{ filled ? '★' : '☆' }}</span>
+    <div class="flex items-center gap-0.5 text-brand-gold">
+      <Star 
+        v-for="(filled, index) in stars" 
+        :key="index" 
+        :size="12" 
+        :fill="filled ? 'currentColor' : 'transparent'" 
+      />
     </div>
-    <span class="text-xs text-slate-500">{{ rate.toFixed(1) }} <span v-if="count">({{ count }})</span></span>
+    <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500">{{ rate.toFixed(1) }} <span v-if="count">({{ count }})</span></span>
   </div>
 </template>
