@@ -53,8 +53,8 @@ onMounted(() => {
     class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
     :class="[
       isScrolled 
-        ? 'bg-white/80 dark:bg-slate-900/80 py-3 shadow-premium backdrop-blur-xl' 
-        : 'bg-white/0 py-5',
+        ? 'bg-slate-50/90 dark:bg-slate-900/90 py-3 shadow-premium backdrop-blur-xl' 
+        : 'bg-white/70 dark:bg-slate-950/70 py-6 backdrop-blur-md',
     ]"
   >
     <div class="page-shell flex items-center justify-between gap-6">
@@ -72,14 +72,14 @@ onMounted(() => {
               Gallery
               <ChevronDown :size="14" class="opacity-40 group-hover:rotate-180 transition-transform" />
             </RouterLink>
-            <div class="panel invisible absolute left-0 top-10 w-64 translate-y-2 p-6 opacity-0 shadow-premium transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ring-1 ring-slate-100 dark:ring-white/5">
+            <div class="panel invisible absolute left-0 top-10 w-64 translate-y-2 p-6 opacity-0 shadow-premium transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 ring-1 ring-slate-100 dark:ring-white/5 dark:bg-slate-900">
               <p class="mb-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Inventory</p>
               <div class="grid gap-3">
                 <RouterLink
                   v-for="category in categories"
                   :key="category"
                   :to="{ path: '/products', query: { category } }"
-                  class="rounded-xl px-4 py-2 font-bold capitalize text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 hover:text-brand-blue"
+                  class="rounded-xl px-4 py-2 font-bold capitalize text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-100 dark:hover:bg-white/5 hover:text-brand-blue"
                 >
                   {{ category }}
                 </RouterLink>
