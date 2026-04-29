@@ -2,9 +2,21 @@ import { ref, onMounted, watch } from 'vue';
 
 const isDark = ref(false);
 
-// Initialize early to avoid flash
+const applyTheme = () => {
+  if (typeof document === 'undefined') return;
+  if (isDark.value) {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('kt-theme', 'dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('kt-theme', 'light');
+  }
+};
+
+// Initialize
 const savedTheme = typeof localStorage !== 'undefined' ? localStorage.getItem('kt-theme') : null;
 const prefersDark = typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+
 if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
   isDark.value = true;
 }
@@ -12,21 +24,10 @@ if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
 export function useTheme() {
   function toggleTheme() {
     isDark.value = !isDark.value;
-  }
-
-  function applyTheme() {
-    if (typeof document === 'undefined') return;
-    if (isDark.value) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('kt-theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('kt-theme', 'light');
-    }
+    applyTheme(); // Apply immediately on click
   }
 
   onMounted(applyTheme);
-  watch(isDark, applyTheme);
 
   return {
     isDark,
