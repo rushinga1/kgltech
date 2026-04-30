@@ -2,6 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'vue-router';
+import { ShieldCheck, Globe } from 'lucide-vue-next';
 import Button from '../components/ui/Button.vue';
 import Input from '../components/ui/Input.vue';
 import Spinner from '../components/ui/Spinner.vue';
@@ -220,90 +221,116 @@ onBeforeUnmount(() => {
   <section class="page-shell py-10">
     <div class="mb-8">
       <p class="text-sm font-semibold uppercase tracking-[0.3em] text-brand-blue">Checkout</p>
-      <h1 class="mt-2 text-3xl font-black text-slate-900 dark:text-white">Secure your order</h1>
+      <h1 class="mt-2 text-3xl font-black text-slate-900">Secure your order</h1>
     </div>
 
     <div class="grid gap-8 lg:grid-cols-[1fr_340px]">
-      <div class="panel p-8 dark:bg-slate-900">
-        <div class="mb-10 flex gap-6 text-[10px] font-black uppercase tracking-[0.2em]">
-          <span :class="step >= 1 ? 'text-brand-blue' : 'text-slate-400'">01. Shipping</span>
-          <span :class="step >= 2 ? 'text-brand-blue' : 'text-slate-400'">02. Review</span>
-          <span :class="step >= 3 ? 'text-brand-blue' : 'text-slate-400'">03. Payment</span>
+      <div class="panel p-6">
+        <div class="mb-8 flex gap-3 text-sm font-semibold">
+          <span :class="step >= 1 ? 'text-brand-blue' : 'text-slate-400'">1. Shipping</span>
+          <span :class="step >= 2 ? 'text-brand-blue' : 'text-slate-400'">2. Review</span>
+          <span :class="step >= 3 ? 'text-brand-blue' : 'text-slate-400'">3. Payment</span>
         </div>
 
-        <form v-if="step === 1" class="grid gap-6 md:grid-cols-2" @submit.prevent="nextStep">
-          <Input v-model="shippingForm.name" label="Full name" class="dark:bg-slate-800 dark:text-white" />
-          <Input v-model="shippingForm.phone" label="Phone number" class="dark:bg-slate-800 dark:text-white" />
-          <Input v-model="shippingForm.address" label="Address" class="dark:bg-slate-800 dark:text-white" />
-          <Input v-model="shippingForm.city" label="City" class="dark:bg-slate-800 dark:text-white" />
-          <label class="flex flex-col gap-2 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
+        <form v-if="step === 1" class="grid gap-4 md:grid-cols-2" @submit.prevent="nextStep">
+          <Input v-model="shippingForm.name" label="Full name" />
+          <Input v-model="shippingForm.phone" label="Phone number" />
+          <Input v-model="shippingForm.address" label="Address" />
+          <Input v-model="shippingForm.city" label="City" />
+          <label class="flex flex-col gap-2 text-sm font-medium text-slate-700">
             <span>Rwanda province</span>
-            <select v-model="shippingForm.province" class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-800 px-4 py-4 text-sm dark:text-white focus:ring-4 focus:ring-brand-blue/5">
+            <select v-model="shippingForm.province" class="rounded-2xl border border-slate-200 px-4 py-3">
               <option v-for="province in provinces" :key="province" :value="province">{{ province }}</option>
             </select>
           </label>
-          <div class="md:col-span-2 pt-4">
-            <Button type="submit" size="lg" class="w-full md:w-fit px-10 shadow-lg shadow-brand-blue/20">Continue to Review</Button>
+          <div class="md:col-span-2">
+            <Button type="submit">Continue to Review</Button>
           </div>
         </form>
 
         <div v-else-if="step === 2" class="space-y-4">
-          <article v-for="item in items" :key="item.id" class="flex items-center justify-between gap-6 rounded-[2rem] bg-slate-50 dark:bg-white/5 p-6 border border-slate-100 dark:border-white/5">
+          <article v-for="item in items" :key="item.id" class="flex items-center justify-between gap-4 rounded-3xl bg-slate-50 p-4">
             <div>
-              <h2 class="font-black text-slate-900 dark:text-white">{{ item.title }}</h2>
-              <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Qty {{ item.qty }}</p>
+              <h2 class="font-semibold text-slate-900">{{ item.title }}</h2>
+              <p class="text-sm text-slate-500">Qty {{ item.qty }}</p>
             </div>
-            <p class="font-black text-brand-green">{{ formatRwfFromUsd(item.price * item.qty) }}</p>
+            <p class="font-semibold text-brand-green">{{ formatRwfFromUsd(item.price * item.qty) }}</p>
           </article>
-          <div class="flex flex-wrap gap-4 pt-6">
-            <Button variant="outline" size="lg" class="px-8 dark:text-white dark:border-white/10" @click="previousStep">Back</Button>
-            <Button size="lg" class="px-10 shadow-lg shadow-brand-blue/20" @click="nextStep">Proceed to Payment</Button>
+          <div class="flex gap-3">
+            <Button variant="outline" @click="previousStep">Back</Button>
+            <Button @click="nextStep">Proceed to Payment</Button>
           </div>
         </div>
 
         <div v-else class="space-y-6">
-          <div v-if="paymentFallback" class="rounded-[2rem] border border-brand-yellow/30 bg-brand-yellow/5 p-6 text-sm font-semibold text-brand-yellow">
-            <div class="flex items-center gap-3">
-               <span class="text-2xl">⚠️</span>
-               <span>Stripe test mode is not configured locally, running in demo fallback mode.</span>
+          <div v-if="paymentFallback" class="glass rounded-3xl border border-brand-yellow/30 bg-brand-yellow/5 p-6 shadow-xl">
+            <div class="flex items-start gap-4">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-yellow/20 text-brand-gold">
+                <ShieldCheck :size="24" />
+              </div>
+              <div class="space-y-1">
+                <p class="font-black text-slate-900 dark:text-white">Payment System Notice</p>
+                <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                  The production payment gateway is not active. We've enabled <strong>Technical Demo Mode</strong> so you can complete your project evaluation. No real funds will be deducted.
+                </p>
+                <p v-if="stripeError" class="mt-4 rounded-xl bg-red-500/10 p-3 text-xs font-bold text-red-500 ring-1 ring-red-500/20">
+                  Technical Detail: {{ stripeError }}
+                </p>
+              </div>
             </div>
           </div>
-          <div v-else-if="stripeReady" class="rounded-[2rem] border border-slate-200 dark:border-white/10 p-8 dark:bg-white/5">
-            <p class="font-black text-slate-900 dark:text-white uppercase text-[10px] tracking-widest mb-4">Secure Card Entry</p>
-            <div id="card-element" class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 px-4 py-6" />
-            <p v-if="stripeError" class="mt-4 text-sm font-black text-red-500">{{ stripeError }}</p>
+
+          <div v-if="!paymentFallback && stripeReady" class="panel p-8 dark:bg-slate-900 shadow-premium">
+            <div class="mb-6">
+              <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand-blue">Secure Payment</p>
+              <h3 class="mt-2 text-xl font-black text-slate-900 dark:text-white">Credit or Debit Card</h3>
+            </div>
+            
+            <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-950 p-6">
+              <div id="card-element" class="min-h-12" />
+            </div>
+
+            <p v-if="stripeError" class="mt-4 text-sm font-bold text-red-500 flex items-center gap-2">
+               <span class="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+               {{ stripeError }}
+            </p>
+            
+            <div class="mt-6 flex items-center gap-4 text-xs font-bold text-slate-400">
+              <Globe :size="14" />
+              <span>Payments secured by Stripe 256-bit encryption</span>
+            </div>
           </div>
-          <div class="flex flex-wrap gap-4 pt-4">
-            <Button variant="outline" size="lg" class="px-8 dark:text-white dark:border-white/10" @click="previousStep">Back</Button>
-            <Button size="lg" class="px-12 shadow-xl shadow-brand-blue/20" :disabled="processing" @click="completeOrder">
-              <span v-if="processing" class="flex items-center gap-2"><Spinner /> Processing</span>
-              <span v-else>{{ paymentFallback ? 'Complete Demo Payment' : 'Pay Now' }}</span>
+
+          <div class="flex gap-4 pt-4">
+            <Button variant="outline" size="lg" class="px-8" @click="previousStep">Back</Button>
+            <Button :disabled="processing" size="lg" class="flex-1 shadow-xl shadow-brand-blue/20" @click="completeOrder">
+              <span v-if="processing" class="flex items-center gap-2 justify-center"><Spinner /> Securing Order...</span>
+              <span v-else class="flex items-center gap-2 justify-center">
+                {{ paymentFallback ? 'Complete Demo Order' : 'Confirm & Pay' }}
+              </span>
             </Button>
           </div>
         </div>
       </div>
 
-      <aside class="panel h-fit p-8 dark:bg-slate-900">
-        <h2 class="text-xl font-black text-slate-900 dark:text-white">Order Total</h2>
-        <div class="mt-8 space-y-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+      <aside class="panel h-fit p-6">
+        <h2 class="text-xl font-bold text-slate-900">Order Total</h2>
+        <div class="mt-5 space-y-3 text-sm text-slate-600">
           <div class="flex items-center justify-between">
             <span>Subtotal</span>
-            <span class="text-slate-900 dark:text-white font-black">{{ formatRwf(grandTotal - shipping - tax) }}</span>
+            <span>{{ formatRwf(grandTotal - shipping - tax) }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span>Shipping Charge</span>
-            <span class="text-slate-900 dark:text-white font-black">{{ formatRwf(shipping) }}</span>
+            <span>Shipping</span>
+            <span>{{ formatRwf(shipping) }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span>Sales Tax</span>
-            <span class="text-slate-900 dark:text-white font-black">{{ formatRwf(tax) }}</span>
+            <span>VAT</span>
+            <span>{{ formatRwf(tax) }}</span>
           </div>
         </div>
-        <div class="mt-8 border-t border-slate-200 dark:border-white/10 pt-6">
-           <div class="flex items-center justify-between text-2xl font-black text-brand-green">
-              <span>Total</span>
-              <span>{{ formatRwf(grandTotal) }}</span>
-           </div>
+        <div class="mt-5 border-t border-slate-200 pt-4 text-lg font-bold text-slate-900">
+          {{ formatRwf(grandTotal) }}
         </div>
       </aside>
     </div>
