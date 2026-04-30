@@ -40,29 +40,30 @@ function submit() {
 </script>
 
 <template>
-  <section class="page-shell py-12">
-    <div class="mx-auto max-w-lg panel p-8">
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-brand-blue">Register</p>
-      <h1 class="mt-3 text-3xl font-black text-slate-900">Create your account</h1>
-      <form class="mt-8 space-y-5" @submit.prevent="submit">
-        <Input v-model="form.name" label="Display name" />
-        <Input v-model="form.email" label="Email" type="email" :error="errors.email" />
-        <div class="space-y-2">
+  <section class="page-shell py-20">
+    <div class="mx-auto max-w-md panel p-10 dark:bg-slate-900 border border-slate-100 dark:border-white/5">
+      <p class="text-[10px] font-black uppercase tracking-[0.4em] text-brand-blue">Join Us</p>
+      <h1 class="mt-3 text-3xl font-black text-slate-900 dark:text-white">Start Your Journey</h1>
+      <form class="mt-10 space-y-6" @submit.prevent="submit">
+        <Input v-model="form.name" label="Public Name" class="dark:bg-slate-800 dark:text-white" />
+        <Input v-model="form.email" label="Email Address" type="email" :error="errors.email" class="dark:bg-slate-800 dark:text-white" />
+        <div class="space-y-3">
           <Input
             v-model="form.password"
-            label="Password"
+            label="Secure Password"
             :type="showPassword ? 'text' : 'password'"
             :error="errors.password"
+            class="dark:bg-slate-800 dark:text-white"
           />
-          <button type="button" class="text-sm font-semibold text-brand-green" @click="showPassword = !showPassword">
-            {{ showPassword ? 'Hide password' : 'Show password' }}
+          <button type="button" class="text-xs font-black uppercase tracking-widest text-brand-green hover:underline" @click="showPassword = !showPassword">
+            {{ showPassword ? 'Hide Secret' : 'View Secret' }}
           </button>
         </div>
-        <Button type="submit" class="w-full">Register</Button>
+        <Button type="submit" size="lg" class="w-full rounded-2xl shadow-xl shadow-brand-blue/20">Create Account</Button>
       </form>
-      <p class="mt-5 text-sm text-slate-500">
-        Already have an account?
-        <RouterLink to="/login" class="font-semibold text-brand-green">Login</RouterLink>
+      <p class="mt-8 text-center text-sm font-medium text-slate-500 dark:text-slate-400">
+        Already part of the crew?
+        <RouterLink to="/login" class="font-black text-brand-green hover:underline ml-1">Sign In</RouterLink>
       </p>
     </div>
   </section>
