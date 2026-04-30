@@ -69,7 +69,7 @@ onMounted(() => {
             The future of tech, <br />
             <span class="bg-gradient-to-r from-brand-blue via-brand-yellow to-brand-green bg-clip-text text-transparent italic">right here in Kigali.</span>
           </h1>
-          <p class="mt-8 max-w-xl text-lg leading-relaxed text-slate-400">
+          <p class="mt-8 max-w-xl text-lg leading-relaxed text-slate-500 dark:text-slate-300">
             Uncompromising quality. Trusted local delivery. We curate the world's best gadgets and accessories for Rwanda's rising tech scene.
           </p>
           <div class="mt-10 flex flex-wrap gap-5">
@@ -87,7 +87,7 @@ onMounted(() => {
               <div>
                 <p class="text-sm font-bold uppercase tracking-widest text-brand-blue">Swift Delivery</p>
                 <p class="mt-1 text-xl font-bold dark:text-white">5-7 Business Days</p>
-                <p class="text-sm text-slate-400">Doorstep delivery across Kigali province</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Doorstep delivery across Kigali province</p>
               </div>
             </div>
             <div class="h-px w-full bg-white/10"></div>
@@ -98,7 +98,7 @@ onMounted(() => {
               <div>
                 <p class="text-sm font-bold uppercase tracking-widest text-brand-green">Global Brands</p>
                 <p class="mt-1 text-xl font-bold dark:text-white">100% Genuine Gear</p>
-                <p class="text-sm text-slate-400">Full warranty on every tech investment</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Full warranty on every tech investment</p>
               </div>
             </div>
           </div>

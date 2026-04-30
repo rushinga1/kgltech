@@ -71,55 +71,59 @@ onMounted(() => {
 
 <template>
   <div class="space-y-12">
-    <div class="text-sm text-slate-500">
-      <RouterLink to="/">Home</RouterLink>
-      <span> / </span>
-      <RouterLink to="/products">Products</RouterLink>
-      <span> / </span>
-      <span class="capitalize">{{ breadcrumbCategory }}</span>
-      <span v-if="product"> / {{ product.title }}</span>
+    <div class="text-xs font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest">
+      <RouterLink to="/" class="hover:text-brand-blue">Home</RouterLink>
+      <span class="mx-2 opacity-50"> / </span>
+      <RouterLink to="/products" class="hover:text-brand-blue">Gallery</RouterLink>
+      <span class="mx-2 opacity-50"> / </span>
+      <span class="capitalize text-slate-400">{{ breadcrumbCategory }}</span>
+      <span v-if="product" class="hidden sm:inline">
+         <span class="mx-2 opacity-50"> / </span>
+         <span class="truncate">{{ product.title }}</span>
+      </span>
     </div>
 
     <div v-if="!product" class="grid gap-8 lg:grid-cols-2">
-      <Skeleton class-name="h-[460px] w-full rounded-[2rem]" />
-      <div class="space-y-4">
+      <Skeleton class-name="h-[520px] w-full rounded-[3.5rem]" />
+      <div class="space-y-6">
         <Skeleton class-name="h-6 w-32" />
-        <Skeleton class-name="h-10 w-full" />
-        <Skeleton class-name="h-6 w-40" />
-        <Skeleton class-name="h-32 w-full" />
+        <Skeleton class-name="h-16 w-full" />
+        <Skeleton class-name="h-8 w-40" />
+        <Skeleton class-name="h-40 w-full" />
       </div>
     </div>
 
-    <div v-else class="grid gap-10 lg:grid-cols-2">
+    <div v-else class="grid gap-12 lg:grid-cols-2">
       <ProductGallery :images="galleryImages" />
 
-      <div>
-        <Badge variant="brand" class="capitalize">{{ product.category }}</Badge>
-        <h1 class="mt-4 text-4xl font-black text-slate-900">{{ product.title }}</h1>
-        <div class="mt-4 flex items-center gap-4">
-          <PriceTag :price="product.price" />
+      <div class="flex flex-col justify-center">
+        <Badge variant="brand" class="w-fit px-4 py-1.5 text-[10px] uppercase font-black tracking-widest">{{ product.category }}</Badge>
+        <h1 class="mt-6 text-4xl font-black text-slate-900 dark:text-white leading-[1.1] md:text-5xl">{{ product.title }}</h1>
+        <div class="mt-6 flex items-center gap-6">
+          <PriceTag :price="product.price" class="scale-125 origin-left" />
+          <div class="h-8 w-px bg-slate-200 dark:bg-white/10"></div>
           <RatingStars :rate="product.rating?.rate || 0" :count="product.rating?.count || 0" />
         </div>
-        <p class="mt-6 leading-7 text-slate-600">
-          {{ product.description }} Perfect for modern homes, startups, and creators across Kigali.
+        <p class="mt-10 text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+          {{ product.description }} This genuine {{ product.category }} item is hand-picked for quality and durability, making it a perfect choice for your tech lifestyle in Kigali.
         </p>
 
-        <div class="mt-8 flex items-center gap-4">
-          <div class="flex items-center rounded-full border border-slate-200 bg-white px-2 py-2">
-            <button type="button" class="px-3 py-1 text-lg" aria-label="Decrease quantity" @click="quantity = Math.max(1, quantity - 1)">-</button>
-            <span class="min-w-10 text-center font-semibold">{{ quantity }}</span>
-            <button type="button" class="px-3 py-1 text-lg" aria-label="Increase quantity" @click="quantity = Math.min(99, quantity + 1)">+</button>
+        <div class="mt-10 flex flex-wrap items-center gap-5">
+          <div class="flex items-center rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 px-2 py-2">
+            <button type="button" class="flex h-10 w-10 items-center justify-center text-xl dark:text-white transition-opacity hover:opacity-50" aria-label="Decrease quantity" @click="quantity = Math.max(1, quantity - 1)">-</button>
+            <span class="min-w-10 text-center font-black dark:text-white">{{ quantity }}</span>
+            <button type="button" class="flex h-10 w-10 items-center justify-center text-xl dark:text-white transition-opacity hover:opacity-50" aria-label="Increase quantity" @click="quantity = Math.min(99, quantity + 1)">+</button>
           </div>
-          <Button @click="addToCart">Add to Cart</Button>
-          <Button variant="outline" @click="addToWishlist">Add to Wishlist</Button>
+          <Button size="lg" class="px-10 h-14 rounded-2xl shadow-xl shadow-brand-blue/20" @click="addToCart">Add to Cart</Button>
+          <Button variant="outline" size="lg" class="h-14 rounded-2xl border-slate-200 dark:border-white/10 dark:text-white" @click="addToWishlist">Favorite</Button>
         </div>
       </div>
     </div>
 
     <section>
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="text-2xl font-black text-slate-900">Related Products</h2>
-        <RouterLink to="/products" class="text-sm font-semibold text-brand-green">See more</RouterLink>
+      <div class="mb-10 flex items-center justify-between">
+        <h2 class="text-3xl font-black text-slate-900 dark:text-white">Related Pieces</h2>
+        <RouterLink to="/products" class="text-sm font-black uppercase tracking-widest text-brand-green hover:underline">Explore all</RouterLink>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <ProductCard v-for="item in relatedProducts" :key="item.id" :product="item" />

@@ -88,31 +88,31 @@ onMounted(() => {
     <Sidebar>
       <div class="space-y-6">
         <div>
-          <p class="text-sm font-semibold text-slate-900">Category</p>
+          <p class="text-sm font-semibold text-slate-900 dark:text-white">Category</p>
           <div class="mt-3 space-y-2">
-            <label class="flex items-center gap-2 text-sm">
-              <input v-model="filters.category" type="radio" value="" />
+            <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+              <input v-model="filters.category" type="radio" value="" class="accent-brand-blue" />
               All
             </label>
-            <label v-for="category in categories" :key="category" class="flex items-center gap-2 text-sm capitalize">
-              <input v-model="filters.category" type="radio" :value="category" />
+            <label v-for="category in categories" :key="category" class="flex items-center gap-2 text-sm capitalize text-slate-600 dark:text-slate-400">
+              <input v-model="filters.category" type="radio" :value="category" class="accent-brand-blue" />
               {{ category }}
             </label>
           </div>
         </div>
 
         <div>
-          <p class="text-sm font-semibold text-slate-900">Price Range (USD source)</p>
+          <p class="text-sm font-semibold text-slate-900 dark:text-white">Price Range (USD)</p>
           <div class="mt-3 space-y-3">
-            <input v-model="filters.minPrice" type="range" min="0" max="1000" step="10" class="w-full" />
-            <input v-model="filters.maxPrice" type="range" min="0" max="1000" step="10" class="w-full" />
-            <p class="text-xs text-slate-500">Min {{ filters.minPrice }} - Max {{ filters.maxPrice }}</p>
+            <input v-model="filters.minPrice" type="range" min="0" max="1000" step="10" class="w-full accent-brand-blue" />
+            <input v-model="filters.maxPrice" type="range" min="0" max="1000" step="10" class="w-full accent-brand-blue" />
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-bold tracking-tight">Min ${{ filters.minPrice }} - Max ${{ filters.maxPrice }}</p>
           </div>
         </div>
 
         <div>
-          <p class="text-sm font-semibold text-slate-900">Minimum Rating</p>
-          <select v-model="filters.rating" class="mt-3 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm">
+          <p class="text-sm font-semibold text-slate-900 dark:text-white">Minimum Rating</p>
+          <select v-model="filters.rating" class="mt-3 w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-4 focus:ring-brand-blue/5">
             <option :value="0">All ratings</option>
             <option :value="3">3 stars+</option>
             <option :value="4">4 stars+</option>
@@ -120,8 +120,8 @@ onMounted(() => {
         </div>
 
         <div>
-          <p class="text-sm font-semibold text-slate-900">Sort</p>
-          <select v-model="filters.sort" class="mt-3 w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm">
+          <p class="text-sm font-semibold text-slate-900 dark:text-white">Sort By</p>
+          <select v-model="filters.sort" class="mt-3 w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 px-4 py-3 text-sm text-slate-900 dark:text-white focus:ring-4 focus:ring-brand-blue/5">
             <option value="popularity">Popularity</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
@@ -133,29 +133,29 @@ onMounted(() => {
     <div>
       <div class="mb-6 flex items-center justify-between">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-blue">Collection</p>
-          <h2 class="mt-2 text-2xl font-black text-slate-900">Browse gadgets and electronics</h2>
+          <p class="text-[10px] font-black uppercase tracking-[0.4em] text-brand-blue">Collection</p>
+          <h2 class="mt-2 text-2xl font-black text-slate-900 dark:text-white">Professional Gear</h2>
         </div>
-        <p class="text-sm text-slate-500">{{ filteredProducts.length }} items</p>
+        <p class="text-xs font-bold text-slate-500 dark:text-slate-400 capitalize">{{ filteredProducts.length }} items found</p>
       </div>
 
-      <div v-if="error" class="panel p-8 text-center">
-        <p class="text-lg font-semibold text-slate-900">{{ error }}</p>
-        <Button class="mt-4" @click="fetchAll(true)">Retry</Button>
+      <div v-if="error" class="panel p-8 text-center ring-1 ring-red-500/10">
+        <p class="text-lg font-semibold text-slate-900 dark:text-white">{{ error }}</p>
+        <Button class="mt-4" @click="fetchAll(true)">Retry Connection</Button>
       </div>
 
       <div v-else-if="loading" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        <Skeleton v-for="index in 6" :key="index" class-name="h-80 w-full rounded-[2rem]" />
+        <Skeleton v-for="index in 8" :key="index" class-name="h-[420px] w-full rounded-[3rem]" />
       </div>
 
       <div
         v-else-if="!filteredProducts.length"
         class="panel flex flex-col items-center justify-center px-6 py-16 text-center"
       >
-        <div class="text-6xl">📦</div>
-        <h3 class="mt-4 text-2xl font-bold text-slate-900">No products match your filters</h3>
-        <p class="mt-2 max-w-md text-sm text-slate-500">
-          Try widening the price range or browsing another Kigali Tech Store category.
+        <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-100 dark:bg-white/5 text-4xl mb-4">📭</div>
+        <h3 class="text-2xl font-black text-slate-900 dark:text-white">Nothing found here</h3>
+        <p class="mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
+          Try adjusting your search or filters to see Rwanda's best electronics.
         </p>
       </div>
 
